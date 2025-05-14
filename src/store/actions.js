@@ -1,6 +1,6 @@
-// src/store/actions.js
 
-const API_BASE_URL = 'https://playground.4geeks.com/contact/agendas/sandrogomez'; // Reemplaza con tu slug de agenda
+
+const API_BASE_URL = 'https://playground.4geeks.com/contact/agendas/sandrogomez';
 
 export const fetchContacts = (dispatch) => {
   dispatch({ type: 'SET_LOADING', payload: true });

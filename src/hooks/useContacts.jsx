@@ -1,8 +1,7 @@
-// src/hooks/useContacts.jsx
 
 import React, { useContext, useReducer } from "react";
 import storeReducer, { initialStore } from "../store/store";
-import { ContactsContext } from '../store/Context'; // Importa el Context creado
+import { ContactsContext } from '../store/Context'; 
 
 export function StoreProvider({ children }) {
     const [state, dispatch] = useReducer(storeReducer, initialStore);

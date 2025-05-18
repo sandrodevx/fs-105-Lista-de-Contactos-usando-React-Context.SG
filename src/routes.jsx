@@ -6,8 +6,8 @@ import {
     Route,
 } from "react-router-dom";
 import { Layout } from "./pages/Layout";
-import { Contacts } from "./pages/Contacts"; // Renombramos y actualizamos la importación
-import { AddContact } from "./pages/AddContact"; // Importamos el nuevo componente
+import { Contacts } from "./pages/Contacts"; 
+import { AddContact } from "./pages/AddContact"; 
 
 export const router = createBrowserRouter(
     createRoutesFromElements(

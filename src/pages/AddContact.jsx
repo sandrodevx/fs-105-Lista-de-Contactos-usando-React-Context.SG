@@ -14,6 +14,7 @@ export const AddContact = () => {
     address: '',
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -35,16 +36,21 @@ export const AddContact = () => {
     setContact({ ...contact, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isEditing) {
-      updateContact(dispatch, id, contact)
-        .then(() => navigate('/contacts'))
-        .catch(error => console.error("Error updating contact:", error));
-    } else {
-      addContact(dispatch, contact)
-        .then(() => navigate('/contacts'))
-        .catch(error => console.error("Error adding contact:", error));
+    setIsSaving(true);
+    
+    try {
+      if (isEditing) {
+        await updateContact(dispatch, id, contact);
+      } else {
+        await addContact(dispatch, contact);
+      }
+      navigate('/');
+    } catch (error) {
+      console.error("Error saving contact:", error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -62,6 +68,7 @@ export const AddContact = () => {
             value={contact.name}
             onChange={handleChange}
             required
+            disabled={isSaving}
           />
         </div>
         <div className="mb-3">
@@ -73,6 +80,7 @@ export const AddContact = () => {
             name="phone"
             value={contact.phone}
             onChange={handleChange}
+            disabled={isSaving}
           />
         </div>
         <div className="mb-3">
@@ -84,6 +92,7 @@ export const AddContact = () => {
             name="email"
             value={contact.email}
             onChange={handleChange}
+            disabled={isSaving}
           />
         </div>
         <div className="mb-3">
@@ -95,17 +104,30 @@ export const AddContact = () => {
             name="address"
             value={contact.address}
             onChange={handleChange}
+            disabled={isSaving}
           />
         </div>
-        <button type="submit" className="btn btn-primary">
-          {isEditing ? 'Guardar Cambios' : 'Añadir Contacto'}
+        <button 
+          type="submit" 
+          className="btn btn-primary"
+          disabled={isSaving}
+        >
+          {isSaving ? 'Guardando...' : (isEditing ? 'Guardar Cambios' : 'Añadir Contacto')}
         </button>
-        <button onClick={() => navigate('/contacts')} className="btn btn-secondary ms-2">
+        <button 
+          onClick={() => navigate('/')} 
+          className="btn btn-secondary ms-2"
+          type="button"
+          disabled={isSaving}
+        >
           Cancelar
         </button>
       </form>
-      {state.loading && <p>Guardando contacto...</p>}
-      {state.error && <p className="alert alert-danger">Error: {state.error}</p>}
+      {state.error && (
+        <div className="alert alert-danger mt-3">
+          Error: {state.error}
+        </div>
+      )}
     </div>
   );
 };
